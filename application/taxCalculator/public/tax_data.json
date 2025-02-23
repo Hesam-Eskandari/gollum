@@ -1,0 +1,604 @@
+{
+  "eip": [
+    {
+      "year": 2015,
+      "rate": 1.880,
+      "maxInsurableEarning": 49500.000,
+      "employerEmployeeContributionRatio": 1.400
+    },
+    {
+      "year": 2016,
+      "rate": 1.880,
+      "maxInsurableEarning": 50800.000,
+      "employerEmployeeContributionRatio": 1.400
+    },
+    {
+      "year": 2017,
+      "rate": 1.630,
+      "maxInsurableEarning": 51300.000,
+      "employerEmployeeContributionRatio": 1.400
+    },
+    {
+      "year": 2018,
+      "rate": 1.660,
+      "maxInsurableEarning": 51700.000,
+      "employerEmployeeContributionRatio": 1.400
+    },
+    {
+      "year": 2019,
+      "rate": 1.620,
+      "maxInsurableEarning": 53100.000,
+      "employerEmployeeContributionRatio": 1.400
+    },
+    {
+      "year": 2020,
+      "rate": 1.580,
+      "maxInsurableEarning": 54200.000,
+      "employerEmployeeContributionRatio": 1.400
+    },
+    {
+      "year": 2021,
+      "rate": 1.580,
+      "maxInsurableEarning": 56300.000,
+      "employerEmployeeContributionRatio": 1.400
+    },
+    {
+      "year": 2022,
+      "rate": 1.580,
+      "maxInsurableEarning": 60300.000,
+      "employerEmployeeContributionRatio": 1.400
+    },
+    {
+      "year": 2023,
+      "rate": 1.630,
+      "maxInsurableEarning": 61500.000,
+      "employerEmployeeContributionRatio": 1.400
+    },
+    {
+      "year": 2024,
+      "rate": 1.660,
+      "maxInsurableEarning": 63200.000,
+      "employerEmployeeContributionRatio": 1.400
+    },
+    {
+      "year": 2025,
+      "rate": 1.640,
+      "maxInsurableEarning": 65700.000,
+      "employerEmployeeContributionRatio": 1.400
+    }
+  ],
+  "cpp": [
+    {
+      "year": 2010,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 0.000,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 47200.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2011,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 0.000,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 48300.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2012,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 0.000,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 50100.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2013,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 0.000,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 51100.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2014,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 0.000,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 52500.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2015,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 0.000,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 53600.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2016,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 0.000,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 54900.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2017,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 0.000,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 55300.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2018,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 0.000,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 55900.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2019,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 0.150,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 57400.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2020,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 0.300,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 58700.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2021,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 0.500,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 61600.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2022,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 0.750,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 64900.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2023,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 1.000,
+      "secondAdditionalRate": 0.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 66600.000,
+      "additionalMaxPensionableEarning": 0.000
+    },
+    {
+      "year": 2024,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 1.000,
+      "secondAdditionalRate": 4.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 68500.000,
+      "additionalMaxPensionableEarning": 73200.000
+    },
+    {
+      "year": 2025,
+      "basicRate": 4.950,
+      "firstAdditionalRate": 1.000,
+      "secondAdditionalRate": 4.000,
+      "basicExemption": 3500.000,
+      "maxPensionableEarning": 69700.000,
+      "additionalMaxPensionableEarning": 79400.000
+    }
+  ],
+  "cea": [
+    {
+      "year": 2020,
+      "value": 1245
+    },
+    {
+      "year": 2021,
+      "value": 1257
+    },
+    {
+      "year": 2022,
+      "value": 1287
+    },
+    {
+      "year": 2023,
+      "value": 1368
+    },
+    {
+      "year": 2024,
+      "value": 1433
+    },
+    {
+      "year": 2025,
+      "value": 1471
+    }
+  ],
+  "bpaFederal": [
+    {
+      "year": 2019,
+      "minBpaAmount": 12069.000,
+      "maxBpaAmount": 12069.000,
+      "minBpaIncome": 0.000,
+      "maxBpaIncome": 0.000
+    },
+    {
+      "year": 2020,
+      "minBpaAmount": 12298.000,
+      "maxBpaAmount": 13229.000,
+      "minBpaIncome": 150473.000,
+      "maxBpaIncome": 214368.000
+    },
+    {
+      "year": 2021,
+      "minBpaAmount": 12421.000,
+      "maxBpaAmount": 13808.000,
+      "minBpaIncome": 151978.000,
+      "maxBpaIncome": 216511.000
+    },
+    {
+      "year": 2022,
+      "minBpaAmount": 12719.000,
+      "maxBpaAmount": 14398.000,
+      "minBpaIncome": 155625.000,
+      "maxBpaIncome": 221708.000
+    },
+    {
+      "year": 2023,
+      "minBpaAmount": 13521.000,
+      "maxBpaAmount": 15000.000,
+      "minBpaIncome": 165430.000,
+      "maxBpaIncome": 235675.000
+    },
+    {
+      "year": 2024,
+      "minBpaAmount": 14156.000,
+      "maxBpaAmount": 15705.000,
+      "minBpaIncome": 173205.000,
+      "maxBpaIncome": 246752.000
+    },
+    {
+      "year": 2025,
+      "minBpaAmount": 14539.000,
+      "maxBpaAmount": 16129.000,
+      "minBpaIncome": 177882.000,
+      "maxBpaIncome": 253414.000
+    }
+  ],
+  "bpaBc": [
+    {
+      "year": 2014,
+      "value": 9869.000
+    },
+    {
+      "year": 2015,
+      "value": 9938.000
+    },
+    {
+      "year": 2016,
+      "value": 10027.000
+    },
+    {
+      "year": 2017,
+      "value": 10208.000
+    },
+    {
+      "year": 2018,
+      "value": 10412.000
+    },
+    {
+      "year": 2019,
+      "value": 10682.000
+    },
+    {
+      "year": 2020,
+      "value": 10949.000
+    },
+    {
+      "year": 2021,
+      "value": 11070.000
+    },
+    {
+      "year": 2022,
+      "value": 11302.000
+    },
+    {
+      "year": 2023,
+      "value": 11981.000
+    },
+    {
+      "year": 2024,
+      "value": 12580.000
+    }
+  ],
+  "bracketsFederal": [
+    {
+      "year": 2022,
+      "rate": 15.000,
+      "low": 0
+    },
+    {
+      "year": 2022,
+      "rate": 20.500,
+      "low": 50197.000
+    },
+    {
+      "year": 2022,
+      "rate": 26.000,
+      "low": 100392.000
+    },
+    {
+      "year": 2022,
+      "rate": 29.000,
+      "low": 155625.000
+    },
+    {
+      "year": 2022,
+      "rate": 33.000,
+      "low": 221708.000
+    },
+    {
+      "year": 2023,
+      "rate": 15.000,
+      "low": 0
+    },
+    {
+      "year": 2023,
+      "rate": 20.500,
+      "low": 53359.000
+    },
+    {
+      "year": 2023,
+      "rate": 26.000,
+      "low": 106717.000
+    },
+    {
+      "year": 2023,
+      "rate": 29.000,
+      "low": 165430.000
+    },
+    {
+      "year": 2023,
+      "rate": 33.000,
+      "low": 235675.000
+    },
+    {
+      "year": 2024,
+      "rate": 15.000,
+      "low": 0.000
+    },
+    {
+      "year": 2024,
+      "rate": 20.500,
+      "low": 55867.000
+    },
+    {
+      "year": 2024,
+      "rate": 26.000,
+      "low": 111733.000
+    },
+    {
+      "year": 2024,
+      "rate": 29.000,
+      "low": 173205.000
+    },
+    {
+      "year": 2024,
+      "rate": 33.000,
+      "low": 246752.000
+    },
+    {
+      "year": 2025,
+      "rate": 15.000,
+      "low": 0
+    },
+    {
+      "year": 2025,
+      "rate": 20.500,
+      "low": 57375.000
+    },
+    {
+      "year": 2025,
+      "rate": 26.000,
+      "low": 114750.000
+    },
+    {
+      "year": 2025,
+      "rate": 29.000,
+      "low": 177882.000
+    },
+    {
+      "year": 2025,
+      "rate": 29.000,
+      "low": 177882.000
+    },
+    {
+      "year": 2025,
+      "rate": 33.000,
+      "low": 253414.000
+    }
+  ],
+  "bracketsBc": [
+    {
+      "year": 2022,
+      "rate": 5.060,
+      "low": 0
+    },
+    {
+      "year": 2022,
+      "rate": 7.700,
+      "low": 43070.000
+    },
+    {
+      "year": 2022,
+      "rate": 10.500,
+      "low": 86141.000
+    },
+    {
+      "year": 2022,
+      "rate": 12.290,
+      "low": 98901.000
+    },
+    {
+      "year": 2022,
+      "rate": 14.700,
+      "low": 120094.000
+    },
+    {
+      "year": 2022,
+      "rate": 16.800,
+      "low": 162832.000
+    },
+    {
+      "year": 2022,
+      "rate": 20.500,
+      "low": 227091.000
+    },
+    {
+      "year": 2023,
+      "rate": 5.060,
+      "low": 0
+    },
+    {
+      "year": 2023,
+      "rate": 7.700,
+      "low": 45654.000
+    },
+    {
+      "year": 2023,
+      "rate": 10.500,
+      "low": 91310.000
+    },
+    {
+      "year": 2023,
+      "rate": 12.290,
+      "low": 104835.000
+    },
+    {
+      "year": 2023,
+      "rate": 14.700,
+      "low": 127299.000
+    },
+    {
+      "year": 2023,
+      "rate": 16.800,
+      "low": 172602.000
+    },
+    {
+      "year": 2023,
+      "rate": 20.500,
+      "low": 240716.000
+    },
+    {
+      "year": 2024,
+      "rate": 5.060,
+      "low": 0
+    },
+    {
+      "year": 2024,
+      "rate": 7.700,
+      "low": 47937.000
+    },
+    {
+      "year": 2024,
+      "rate": 10.500,
+      "low": 95875.000
+    },
+    {
+      "year": 2024,
+      "rate": 12.290,
+      "low": 110076.000
+    },
+    {
+      "year": 2024,
+      "rate": 14.700,
+      "low": 133664.000
+    },
+    {
+      "year": 2024,
+      "rate": 16.800,
+      "low": 181232.000
+    },
+    {
+      "year": 2024,
+      "rate": 20.500,
+      "low": 252752.000
+    }
+  ],
+  "rrsp": [
+    {
+      "year": 2018,
+      "rate": 18.000,
+      "maxContribution": 26230.000,
+      "overContributionLimit": 2000.000,
+      "overContributionRate": 1.000
+    },
+    {
+      "year": 2019,
+      "rate": 18.000,
+      "maxContribution": 26500.000,
+      "overContributionLimit": 2000.000,
+      "overContributionRate": 1.000
+    },
+    {
+      "year": 2020,
+      "rate": 18.000,
+      "maxContribution": 27230.000,
+      "overContributionLimit": 2000.000,
+      "overContributionRate": 1.000
+    },
+    {
+      "year": 2021,
+      "rate": 18.000,
+      "maxContribution": 27830.000,
+      "overContributionLimit": 2000.000,
+      "overContributionRate": 1.000
+    },
+    {
+      "year": 2022,
+      "rate": 18.000,
+      "maxContribution": 29210.000,
+      "overContributionLimit": 2000.000,
+      "overContributionRate": 1.000
+    },
+    {
+      "year": 2023,
+      "rate": 18.000,
+      "maxContribution": 30780.000,
+      "overContributionLimit": 2000.000,
+      "overContributionRate": 1.000
+    },
+    {
+      "year": 2024,
+      "rate": 18.000,
+      "maxContribution": 31560.000,
+      "overContributionLimit": 2000.000,
+      "overContributionRate": 1.000
+    }
+  ]
+}
