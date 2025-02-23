@@ -15,7 +15,7 @@ import (
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/errorWrap"
 )
 
-const filePath = "application/taxCalculator/public/tax_data.json"
+const filePath = "application/taxCalculator/service/fileStorage/tax_data.json"
 
 var ErrFederalBPANotFound = errors.New("federal bpa data not found")
 var ErrFederalCEANotFound = errors.New("federal cea data not found")
