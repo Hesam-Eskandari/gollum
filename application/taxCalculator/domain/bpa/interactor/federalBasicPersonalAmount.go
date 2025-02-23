@@ -1,0 +1,61 @@
+package interactor
+
+import (
+	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/bpa"
+	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/bpa/entity"
+	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/errorWrap"
+)
+
+type FederalBPA interface {
+	GetAmountAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64]
+	CalculateAmount(model entity.FederalBPA, income float64) (float64, error)
+}
+
+type federalBPAImpl struct {
+	bpaAmount    float64
+	dataProvider bpa.DataProvider
+}
+
+func NewFederalBPA(dataProvider bpa.DataProvider) FederalBPA {
+	return &federalBPAImpl{
+		dataProvider: dataProvider,
+	}
+}
+
+func (fed *federalBPAImpl) GetAmountAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
+	resChan := make(chan errorWrap.ErrorWrap[float64], 1)
+	go func() {
+		defer close(resChan)
+		res := errorWrap.ErrorWrap[float64]{}
+		defer func() { resChan <- res }()
+		if fed.bpaAmount != 0 {
+			res.Value = fed.bpaAmount
+			return
+		}
+		modelWrap := <-fed.dataProvider.GetFederalBPAAsync(year)
+		if modelWrap.Error != nil {
+			res.Error = modelWrap.Error
+			return
+		}
+		model := modelWrap.Value
+		res.Value, res.Error = fed.CalculateAmount(model, income)
+	}()
+	return resChan
+}
+
+func (fed *federalBPAImpl) CalculateAmount(model entity.FederalBPA, income float64) (float64, error) {
+	if err := model.Validate(income); err != nil {
+		return 0, err
+	}
+	if income >= model.MinBPAIncome {
+		fed.bpaAmount = model.MinBPAAmount
+	} else if income > model.MaxBPAIncome && income < model.MinBPAIncome {
+		fed.bpaAmount = model.MaxBPAAmount -
+			((income - model.MaxBPAIncome) *
+				((model.MaxBPAAmount - model.MinBPAAmount) / (model.MinBPAIncome - model.MaxBPAIncome)))
+	} else {
+		fed.bpaAmount = model.MaxBPAAmount
+	}
+	fed.bpaAmount = float64(int(fed.bpaAmount*1000) / 1000)
+	return fed.bpaAmount, nil
+}
