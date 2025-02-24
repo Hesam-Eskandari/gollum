@@ -1,13 +1,14 @@
 package interactor
 
 import (
+	"context"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/bpa"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/bpa/entity"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/errorWrap"
 )
 
 type FederalBPA interface {
-	GetAmountAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64]
+	GetAmountAsync(ctx context.Context, income float64, year int) <-chan errorWrap.ErrorWrap[float64]
 	CalculateAmount(model entity.FederalBPA, income float64) (float64, error)
 }
 
@@ -22,7 +23,7 @@ func NewFederalBPA(dataProvider bpa.FederalDataProvider) FederalBPA {
 	}
 }
 
-func (fed *federalBPAImpl) GetAmountAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
+func (fed *federalBPAImpl) GetAmountAsync(ctx context.Context, income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
 	resChan := make(chan errorWrap.ErrorWrap[float64], 1)
 	go func() {
 		defer close(resChan)
@@ -32,7 +33,7 @@ func (fed *federalBPAImpl) GetAmountAsync(income float64, year int) <-chan error
 			res.Value = fed.bpaAmount
 			return
 		}
-		modelWrap := <-fed.dataProvider.GetFederalBPAAsync(year)
+		modelWrap := <-fed.dataProvider.GetFederalBPAAsync(ctx, year)
 		if modelWrap.Error != nil {
 			res.Error = modelWrap.Error
 			return

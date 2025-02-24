@@ -1,12 +1,13 @@
 package interactor
 
 import (
+	"context"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/cea"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/errorWrap"
 )
 
 type FederalCEA interface {
-	GetAmountAsync(year int) <-chan errorWrap.ErrorWrap[float64]
+	GetAmountAsync(ctx context.Context, year int) <-chan errorWrap.ErrorWrap[float64]
 }
 
 func NewFederalCEA(dataProvider cea.DataProvider) FederalCEA {
@@ -20,7 +21,7 @@ type federalCEAImpl struct {
 	dataProvider cea.DataProvider
 }
 
-func (fed *federalCEAImpl) GetAmountAsync(year int) <-chan errorWrap.ErrorWrap[float64] {
+func (fed *federalCEAImpl) GetAmountAsync(ctx context.Context, year int) <-chan errorWrap.ErrorWrap[float64] {
 	resChan := make(chan errorWrap.ErrorWrap[float64], 1)
 	go func() {
 		defer close(resChan)
@@ -30,7 +31,7 @@ func (fed *federalCEAImpl) GetAmountAsync(year int) <-chan errorWrap.ErrorWrap[f
 			res.Value = fed.amount
 			return
 		}
-		modelWrap := <-fed.dataProvider.GetFederalCEAAsync(year)
+		modelWrap := <-fed.dataProvider.GetFederalCEAAsync(ctx, year)
 		if modelWrap.Error != nil {
 			res.Error = modelWrap.Error
 			return

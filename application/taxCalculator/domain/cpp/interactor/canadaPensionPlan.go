@@ -1,17 +1,18 @@
 package interactor
 
 import (
+	"context"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/cpp"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/cpp/entity"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/errorWrap"
 )
 
 type FederalCPP interface {
-	GetCPPBasicAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64]
+	GetCPPBasicAsync(ctx context.Context, income float64, year int) <-chan errorWrap.ErrorWrap[float64]
 	CalcCPPBasic(model entity.FederalCPP, income float64) (float64, error)
-	GetCPPFirstAdditionalAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64]
+	GetCPPFirstAdditionalAsync(ctx context.Context, income float64, year int) <-chan errorWrap.ErrorWrap[float64]
 	CalcCPPFirstAdditional(model entity.FederalCPP, income float64) (float64, error)
-	GetCPPSecondAdditionalAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64]
+	GetCPPSecondAdditionalAsync(ctx context.Context, income float64, year int) <-chan errorWrap.ErrorWrap[float64]
 	CalcCPPSecondAdditional(model entity.FederalCPP, income float64) (float64, error)
 }
 
@@ -25,13 +26,13 @@ type federalCPPImpl struct {
 	dataProvider cpp.DataProvider
 }
 
-func (fed *federalCPPImpl) GetCPPBasicAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
+func (fed *federalCPPImpl) GetCPPBasicAsync(ctx context.Context, income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
 	resChan := make(chan errorWrap.ErrorWrap[float64], 1)
 	go func() {
 		defer close(resChan)
 		res := errorWrap.ErrorWrap[float64]{}
 		defer func() { resChan <- res }()
-		modelWrap := <-fed.dataProvider.GetFederalCPPAsync(year)
+		modelWrap := <-fed.dataProvider.GetFederalCPPAsync(ctx, year)
 		if modelWrap.Error != nil {
 			res.Error = modelWrap.Error
 			return
@@ -52,13 +53,13 @@ func (fed *federalCPPImpl) CalcCPPBasic(model entity.FederalCPP, income float64)
 	return basicValue, nil
 }
 
-func (fed *federalCPPImpl) GetCPPFirstAdditionalAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
+func (fed *federalCPPImpl) GetCPPFirstAdditionalAsync(ctx context.Context, income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
 	resChan := make(chan errorWrap.ErrorWrap[float64], 1)
 	go func() {
 		defer close(resChan)
 		res := errorWrap.ErrorWrap[float64]{}
 		defer func() { resChan <- res }()
-		modelWrap := <-fed.dataProvider.GetFederalCPPAsync(year)
+		modelWrap := <-fed.dataProvider.GetFederalCPPAsync(ctx, year)
 		if modelWrap.Error != nil {
 			res.Error = modelWrap.Error
 			return
@@ -82,13 +83,13 @@ func (fed *federalCPPImpl) CalcCPPFirstAdditional(model entity.FederalCPP, incom
 	return firstAdditionalValue, nil
 }
 
-func (fed *federalCPPImpl) GetCPPSecondAdditionalAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
+func (fed *federalCPPImpl) GetCPPSecondAdditionalAsync(ctx context.Context, income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
 	resChan := make(chan errorWrap.ErrorWrap[float64], 1)
 	go func() {
 		defer close(resChan)
 		res := errorWrap.ErrorWrap[float64]{}
 		defer func() { resChan <- res }()
-		modelWrap := <-fed.dataProvider.GetFederalCPPAsync(year)
+		modelWrap := <-fed.dataProvider.GetFederalCPPAsync(ctx, year)
 		if modelWrap.Error != nil {
 			res.Error = modelWrap.Error
 			return

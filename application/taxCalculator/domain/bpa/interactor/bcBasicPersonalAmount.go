@@ -1,12 +1,13 @@
 package interactor
 
 import (
+	"context"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/bpa"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/errorWrap"
 )
 
 type BritishColumbiaBPA interface {
-	GetAmountAsync(year int) <-chan errorWrap.ErrorWrap[float64]
+	GetAmountAsync(ctx context.Context, year int) <-chan errorWrap.ErrorWrap[float64]
 }
 
 func NewBritishColumbiaBPA(dataProvider bpa.BCDataProvider) BritishColumbiaBPA {
@@ -20,7 +21,7 @@ type bcBpaImpl struct {
 	dataProvider bpa.BCDataProvider
 }
 
-func (bpa *bcBpaImpl) GetAmountAsync(year int) <-chan errorWrap.ErrorWrap[float64] {
+func (bpa *bcBpaImpl) GetAmountAsync(ctx context.Context, year int) <-chan errorWrap.ErrorWrap[float64] {
 	resChan := make(chan errorWrap.ErrorWrap[float64], 1)
 	go func() {
 		defer close(resChan)
@@ -30,7 +31,7 @@ func (bpa *bcBpaImpl) GetAmountAsync(year int) <-chan errorWrap.ErrorWrap[float6
 			res.Value = bpa.amount
 			return
 		}
-		modelWrap := <-bpa.dataProvider.GetBritishColumbiaBPAAsync(year)
+		modelWrap := <-bpa.dataProvider.GetBritishColumbiaBPAAsync(ctx, year)
 		if modelWrap.Error != nil {
 			res.Error = modelWrap.Error
 			return

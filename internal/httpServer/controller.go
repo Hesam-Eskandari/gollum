@@ -5,7 +5,7 @@ import (
 )
 
 type Controller interface {
-	Handle(http.ResponseWriter, *http.Request)
 	GetOrderedMiddlewares() []Middleware
 	GetUrl() string
+	Handle(http.ResponseWriter, *http.Request)
 }

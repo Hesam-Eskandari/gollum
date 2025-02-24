@@ -1,15 +1,16 @@
 package interactor
 
 import (
+	"context"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/eip"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/eip/entity"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/errorWrap"
 )
 
 type FederalEIP interface {
-	GetEmployeeContributionAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64]
+	GetEmployeeContributionAsync(ctx context.Context, income float64, year int) <-chan errorWrap.ErrorWrap[float64]
 	CalcEmployeeContribution(model entity.FederalEIP, income float64) (float64, error)
-	GetEmployerContributionAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64]
+	GetEmployerContributionAsync(ctx context.Context, income float64, year int) <-chan errorWrap.ErrorWrap[float64]
 	CalcEmployerContribution(model entity.FederalEIP, income float64) (float64, error)
 }
 
@@ -23,13 +24,13 @@ type federalEIPImpl struct {
 	dataProvider eip.DataProvider
 }
 
-func (fed *federalEIPImpl) GetEmployeeContributionAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
+func (fed *federalEIPImpl) GetEmployeeContributionAsync(ctx context.Context, income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
 	resChan := make(chan errorWrap.ErrorWrap[float64], 1)
 	go func() {
 		defer close(resChan)
 		res := errorWrap.ErrorWrap[float64]{}
 		defer func() { resChan <- res }()
-		modelChan := <-fed.dataProvider.GetFederalEIPAsync(year)
+		modelChan := <-fed.dataProvider.GetFederalEIPAsync(ctx, year)
 		if modelChan.Error != nil {
 			res.Error = modelChan.Error
 			return
@@ -50,13 +51,13 @@ func (fed *federalEIPImpl) CalcEmployeeContribution(model entity.FederalEIP, inc
 	return employeeContribution, nil
 }
 
-func (fed *federalEIPImpl) GetEmployerContributionAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
+func (fed *federalEIPImpl) GetEmployerContributionAsync(ctx context.Context, income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
 	resChan := make(chan errorWrap.ErrorWrap[float64], 1)
 	go func() {
 		defer close(resChan)
 		res := errorWrap.ErrorWrap[float64]{}
 		defer func() { resChan <- res }()
-		modelWrap := <-fed.dataProvider.GetFederalEIPAsync(year)
+		modelWrap := <-fed.dataProvider.GetFederalEIPAsync(ctx, year)
 		if modelWrap.Error != nil {
 			res.Error = modelWrap.Error
 			return

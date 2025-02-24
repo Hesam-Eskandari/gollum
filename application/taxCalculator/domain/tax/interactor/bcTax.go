@@ -1,6 +1,7 @@
 package interactor
 
 import (
+	"context"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/bpa/interactor"
 	interactor2 "github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/brackets/interactor"
@@ -11,7 +12,7 @@ import (
 )
 
 type BCTax interface {
-	Calculate(year int, income float64) (entity.BcTax, error)
+	Calculate(ctx context.Context, year int, income float64) (entity.BcTax, error)
 }
 
 func NewBcTax(dataProvider domain.BCDataProvider) BCTax {
@@ -32,8 +33,8 @@ type bcTaxImpl struct {
 	taxBracketCalculator interactor2.TaxBracketCalculator
 }
 
-func (bc *bcTaxImpl) Calculate(year int, income float64) (entity.BcTax, error) {
-	bcTax, err := bc.getData(year, income)
+func (bc *bcTaxImpl) Calculate(ctx context.Context, year int, income float64) (entity.BcTax, error) {
+	bcTax, err := bc.getData(ctx, year, income)
 	if err != nil {
 		return bcTax, err
 	}
@@ -47,13 +48,13 @@ func (bc *bcTaxImpl) Calculate(year int, income float64) (entity.BcTax, error) {
 	return bcTax, nil
 }
 
-func (bc *bcTaxImpl) getData(year int, income float64) (entity.BcTax, error) {
-	bpaEWrapChan := bc.bpaCalculator.GetAmountAsync(year)
-	cppBasicEWrapChan := bc.cppCalculator.GetCPPBasicAsync(income, year)
-	cppFirstEWrapChan := bc.cppCalculator.GetCPPFirstAdditionalAsync(income, year)
-	cppSecondEWrapChan := bc.cppCalculator.GetCPPSecondAdditionalAsync(income, year)
-	eipEWrapChan := bc.eipCalculator.GetEmployeeContributionAsync(income, year)
-	bracketsEWrapChan := bc.dataProvider.GetTaxBracketsAsync(year, province.BC)
+func (bc *bcTaxImpl) getData(ctx context.Context, year int, income float64) (entity.BcTax, error) {
+	bpaEWrapChan := bc.bpaCalculator.GetAmountAsync(ctx, year)
+	cppBasicEWrapChan := bc.cppCalculator.GetCPPBasicAsync(ctx, income, year)
+	cppFirstEWrapChan := bc.cppCalculator.GetCPPFirstAdditionalAsync(ctx, income, year)
+	cppSecondEWrapChan := bc.cppCalculator.GetCPPSecondAdditionalAsync(ctx, income, year)
+	eipEWrapChan := bc.eipCalculator.GetEmployeeContributionAsync(ctx, income, year)
+	bracketsEWrapChan := bc.dataProvider.GetTaxBracketsAsync(ctx, year, province.BC)
 	bcTax := entity.BcTax{Year: year}
 	bpaEWrap := <-bpaEWrapChan
 	if bpaEWrap.Error != nil {

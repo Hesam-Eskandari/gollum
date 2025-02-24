@@ -1,6 +1,7 @@
 package interactor
 
 import (
+	"context"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/brackets"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/brackets/entity"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/constants/province"
@@ -9,7 +10,7 @@ import (
 )
 
 type TaxBracketCalculator interface {
-	GetCalculatedTaxAsync(taxableIncome float64, year int, pr province.Province) <-chan errorWrap.ErrorWrap[float64]
+	GetCalculatedTaxAsync(ctx context.Context, taxableIncome float64, year int, pr province.Province) <-chan errorWrap.ErrorWrap[float64]
 	ApplyTaxBrackets(taxableIncome float64, brackets []entity.TaxBracket) float64
 }
 
@@ -23,13 +24,13 @@ type taxBracketCalculatorImpl struct {
 	dataProvider brackets.TaxBracketDataProvider
 }
 
-func (tb *taxBracketCalculatorImpl) GetCalculatedTaxAsync(taxableIncome float64, year int, pr province.Province) <-chan errorWrap.ErrorWrap[float64] {
+func (tb *taxBracketCalculatorImpl) GetCalculatedTaxAsync(ctx context.Context, taxableIncome float64, year int, pr province.Province) <-chan errorWrap.ErrorWrap[float64] {
 	resChan := make(chan errorWrap.ErrorWrap[float64], 1)
 	go func() {
 		defer close(resChan)
 		res := errorWrap.ErrorWrap[float64]{}
 		defer func() { resChan <- res }()
-		modelEWrap := <-tb.dataProvider.GetTaxBracketsAsync(year, pr)
+		modelEWrap := <-tb.dataProvider.GetTaxBracketsAsync(ctx, year, pr)
 		if modelEWrap.Error != nil {
 			res.Error = modelEWrap.Error
 			return

@@ -1,12 +1,13 @@
 package fileStorage
 
 import (
+	"context"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/bpa/entity"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/errorWrap"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/service/fileStorage/internal/models"
 )
 
-func (dp *fileStorage) GetBritishColumbiaBPAAsync(year int) <-chan errorWrap.ErrorWrap[entity.BritishColumbiaBPA] {
+func (dp *fileStorage) GetBritishColumbiaBPAAsync(ctx context.Context, year int) <-chan errorWrap.ErrorWrap[entity.BritishColumbiaBPA] {
 	resChan := make(chan errorWrap.ErrorWrap[entity.BritishColumbiaBPA], 1)
 	go func() {
 		defer close(resChan)

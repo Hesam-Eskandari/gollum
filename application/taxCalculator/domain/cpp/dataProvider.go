@@ -1,10 +1,11 @@
 package cpp
 
 import (
+	"context"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/cpp/entity"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/errorWrap"
 )
 
 type DataProvider interface {
-	GetFederalCPPAsync(year int) <-chan errorWrap.ErrorWrap[entity.FederalCPP]
+	GetFederalCPPAsync(ctx context.Context, year int) <-chan errorWrap.ErrorWrap[entity.FederalCPP]
 }

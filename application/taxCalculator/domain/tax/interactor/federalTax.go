@@ -1,6 +1,7 @@
 package interactor
 
 import (
+	"context"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain"
 	interactor3 "github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/bpa/interactor"
 	interactor5 "github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/brackets/interactor"
@@ -12,7 +13,7 @@ import (
 )
 
 type FederalTax interface {
-	Calculate(year int, income float64) (entity5.FederalTax, error)
+	Calculate(ctx context.Context, year int, income float64) (entity5.FederalTax, error)
 }
 
 func NewFederalTax(dataProvider domain.FederalDataProvider) FederalTax {
@@ -35,8 +36,8 @@ type federalTaxImpl struct {
 	dataProvider         domain.FederalDataProvider
 }
 
-func (fed *federalTaxImpl) Calculate(year int, income float64) (entity5.FederalTax, error) {
-	federalTax, err := fed.getData(year, income)
+func (fed *federalTaxImpl) Calculate(ctx context.Context, year int, income float64) (entity5.FederalTax, error) {
+	federalTax, err := fed.getData(ctx, year, income)
 	if err != nil {
 		return federalTax, err
 	}
@@ -51,14 +52,14 @@ func (fed *federalTaxImpl) Calculate(year int, income float64) (entity5.FederalT
 	return federalTax, nil
 }
 
-func (fed *federalTaxImpl) getData(year int, income float64) (entity5.FederalTax, error) {
-	bpaEWrapChan := fed.bpaCalculator.GetAmountAsync(income, year)
-	ceaEWrapChan := fed.ceaCalculator.GetAmountAsync(year)
-	cppBasicEWrapChan := fed.cppCalculator.GetCPPBasicAsync(income, year)
-	cppFirstEWrapChan := fed.cppCalculator.GetCPPFirstAdditionalAsync(income, year)
-	cppSecondEWrapChan := fed.cppCalculator.GetCPPSecondAdditionalAsync(income, year)
-	eipEWrapChan := fed.eipCalculator.GetEmployeeContributionAsync(income, year)
-	bracketsEWrapChan := fed.dataProvider.GetTaxBracketsAsync(year, province.Federal)
+func (fed *federalTaxImpl) getData(ctx context.Context, year int, income float64) (entity5.FederalTax, error) {
+	bpaEWrapChan := fed.bpaCalculator.GetAmountAsync(ctx, income, year)
+	ceaEWrapChan := fed.ceaCalculator.GetAmountAsync(ctx, year)
+	cppBasicEWrapChan := fed.cppCalculator.GetCPPBasicAsync(ctx, income, year)
+	cppFirstEWrapChan := fed.cppCalculator.GetCPPFirstAdditionalAsync(ctx, income, year)
+	cppSecondEWrapChan := fed.cppCalculator.GetCPPSecondAdditionalAsync(ctx, income, year)
+	eipEWrapChan := fed.eipCalculator.GetEmployeeContributionAsync(ctx, income, year)
+	bracketsEWrapChan := fed.dataProvider.GetTaxBracketsAsync(ctx, year, province.Federal)
 	federalTax := entity5.FederalTax{Year: year}
 	bpaEWrap := <-bpaEWrapChan
 	if bpaEWrap.Error != nil {

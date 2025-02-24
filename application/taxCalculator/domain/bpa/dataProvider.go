@@ -1,14 +1,15 @@
 package bpa
 
 import (
+	"context"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/bpa/entity"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/errorWrap"
 )
 
 type FederalDataProvider interface {
-	GetFederalBPAAsync(year int) <-chan errorWrap.ErrorWrap[entity.FederalBPA]
+	GetFederalBPAAsync(ctx context.Context, year int) <-chan errorWrap.ErrorWrap[entity.FederalBPA]
 }
 
 type BCDataProvider interface {
-	GetBritishColumbiaBPAAsync(year int) <-chan errorWrap.ErrorWrap[entity.BritishColumbiaBPA]
+	GetBritishColumbiaBPAAsync(ctx context.Context, year int) <-chan errorWrap.ErrorWrap[entity.BritishColumbiaBPA]
 }

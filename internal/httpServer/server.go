@@ -13,7 +13,7 @@ type HttpServer struct {
 	controllers map[string]Controller
 }
 
-func New(address string, enableHttps bool) *HttpServer {
+func NewServer(address string, enableHttps bool) *HttpServer {
 	return &HttpServer{
 		address:     address,
 		mux:         http.NewServeMux(),
@@ -45,6 +45,7 @@ func (s *HttpServer) Launch() <-chan error {
 			errChan <- err
 			return
 		}
+		fmt.Println("starting http server on", s.address)
 		if err = server.ListenAndServe(); err != nil {
 			errChan <- err
 			return
