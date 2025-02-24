@@ -9,13 +9,21 @@ import (
 )
 
 type FederalDataProvider interface {
-	bpa.DataProvider
+	bpa.FederalDataProvider
 	cea.DataProvider
-	cpp.FederalDataProvider
+	cpp.DataProvider
+	eip.DataProvider
+	brackets.TaxBracketDataProvider
+}
+
+type BCDataProvider interface {
+	bpa.BCDataProvider
+	cpp.DataProvider
 	eip.DataProvider
 	brackets.TaxBracketDataProvider
 }
 
 type DataProvider interface {
 	FederalDataProvider
+	BCDataProvider
 }

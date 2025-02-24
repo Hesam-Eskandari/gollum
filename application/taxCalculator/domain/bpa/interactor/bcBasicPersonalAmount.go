@@ -1,36 +1,36 @@
 package interactor
 
 import (
-	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/cea"
+	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/bpa"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/errorWrap"
 )
 
-type FederalCEA interface {
+type BritishColumbiaBPA interface {
 	GetAmountAsync(year int) <-chan errorWrap.ErrorWrap[float64]
 }
 
-func NewFederalCEA(dataProvider cea.DataProvider) FederalCEA {
-	return &federalCEAImpl{
+func NewBritishColumbiaBPA(dataProvider bpa.BCDataProvider) BritishColumbiaBPA {
+	return &bcBpaImpl{
 		dataProvider: dataProvider,
 	}
 }
 
-type federalCEAImpl struct {
+type bcBpaImpl struct {
 	amount       float64
-	dataProvider cea.DataProvider
+	dataProvider bpa.BCDataProvider
 }
 
-func (fed *federalCEAImpl) GetAmountAsync(year int) <-chan errorWrap.ErrorWrap[float64] {
+func (bpa *bcBpaImpl) GetAmountAsync(year int) <-chan errorWrap.ErrorWrap[float64] {
 	resChan := make(chan errorWrap.ErrorWrap[float64], 1)
 	go func() {
 		defer close(resChan)
 		res := errorWrap.ErrorWrap[float64]{}
 		defer func() { resChan <- res }()
-		if fed.amount != 0 {
-			res.Value = fed.amount
+		if bpa.amount != 0 {
+			res.Value = bpa.amount
 			return
 		}
-		modelWrap := <-fed.dataProvider.GetFederalCEAAsync(year)
+		modelWrap := <-bpa.dataProvider.GetBritishColumbiaBPAAsync(year)
 		if modelWrap.Error != nil {
 			res.Error = modelWrap.Error
 			return
@@ -39,9 +39,7 @@ func (fed *federalCEAImpl) GetAmountAsync(year int) <-chan errorWrap.ErrorWrap[f
 			res.Error = err
 			return
 		}
-		model := modelWrap.Value
-		fed.amount = model.Amount
-		res.Value = fed.amount
+		res.Value = modelWrap.Value.Amount
 	}()
 	return resChan
 }

@@ -34,8 +34,7 @@ func (tb *taxBracketCalculatorImpl) GetCalculatedTaxAsync(taxableIncome float64,
 			res.Error = modelEWrap.Error
 			return
 		}
-		model := modelEWrap.Value
-		res.Value = tb.ApplyTaxBrackets(taxableIncome, model)
+		res.Value = tb.ApplyTaxBrackets(taxableIncome, modelEWrap.Value)
 	}()
 	return resChan
 }

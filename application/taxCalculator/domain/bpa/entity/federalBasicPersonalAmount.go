@@ -10,10 +10,7 @@ type FederalBPA struct {
 	MaxBPAAmount float64
 }
 
-func (fed *FederalBPA) Validate(income float64) error {
-	if income < 0 {
-		return fmt.Errorf("bpaf error: invalid income: \"%v\"", income)
-	}
+func (fed *FederalBPA) Validate() error {
 	if fed.MaxBPAIncome <= 0 {
 		return fmt.Errorf("bpaf error: invalid MaxBPAIncome: \"%v\"", fed.MaxBPAIncome)
 	}

@@ -5,6 +5,6 @@ import (
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/errorWrap"
 )
 
-type FederalDataProvider interface {
+type DataProvider interface {
 	GetFederalCPPAsync(year int) <-chan errorWrap.ErrorWrap[entity.FederalCPP]
 }

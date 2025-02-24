@@ -56,13 +56,16 @@ func (fed *federalEIPImpl) GetEmployerContributionAsync(income float64, year int
 		defer close(resChan)
 		res := errorWrap.ErrorWrap[float64]{}
 		defer func() { resChan <- res }()
-		modelChan := <-fed.dataProvider.GetFederalEIPAsync(year)
-		if modelChan.Error != nil {
-			res.Error = modelChan.Error
+		modelWrap := <-fed.dataProvider.GetFederalEIPAsync(year)
+		if modelWrap.Error != nil {
+			res.Error = modelWrap.Error
 			return
 		}
-		model := modelChan.Value
-		res.Value, res.Error = fed.CalcEmployerContribution(model, income)
+		if err := modelWrap.Value.Validate(); err != nil {
+			res.Error = err
+			return
+		}
+		res.Value, res.Error = fed.CalcEmployerContribution(modelWrap.Value, income)
 	}()
 	return resChan
 }

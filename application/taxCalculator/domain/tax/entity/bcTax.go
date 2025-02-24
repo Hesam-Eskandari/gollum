@@ -4,10 +4,9 @@ import (
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/brackets/entity"
 )
 
-type FederalTax struct {
+type BcTax struct {
 	BPA                 float64 // tax credit
 	Brackets            []entity.TaxBracket
-	CEA                 float64 // tax credit
 	CPPBasic            float64 // tax credit
 	CPPFirst            float64 // tax deduction
 	CPPSecond           float64 // tax deduction

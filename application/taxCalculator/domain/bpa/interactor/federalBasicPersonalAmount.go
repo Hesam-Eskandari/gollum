@@ -13,10 +13,10 @@ type FederalBPA interface {
 
 type federalBPAImpl struct {
 	bpaAmount    float64
-	dataProvider bpa.DataProvider
+	dataProvider bpa.FederalDataProvider
 }
 
-func NewFederalBPA(dataProvider bpa.DataProvider) FederalBPA {
+func NewFederalBPA(dataProvider bpa.FederalDataProvider) FederalBPA {
 	return &federalBPAImpl{
 		dataProvider: dataProvider,
 	}
@@ -37,14 +37,13 @@ func (fed *federalBPAImpl) GetAmountAsync(income float64, year int) <-chan error
 			res.Error = modelWrap.Error
 			return
 		}
-		model := modelWrap.Value
-		res.Value, res.Error = fed.CalculateAmount(model, income)
+		res.Value, res.Error = fed.CalculateAmount(modelWrap.Value, income)
 	}()
 	return resChan
 }
 
 func (fed *federalBPAImpl) CalculateAmount(model entity.FederalBPA, income float64) (float64, error) {
-	if err := model.Validate(income); err != nil {
+	if err := model.Validate(); err != nil {
 		return 0, err
 	}
 	if income >= model.MinBPAIncome {

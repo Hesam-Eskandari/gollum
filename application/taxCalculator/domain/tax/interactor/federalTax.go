@@ -12,7 +12,7 @@ import (
 )
 
 type FederalTax interface {
-	Calculate(year int, pr province.Province, income float64) (entity5.FederalTax, error)
+	Calculate(year int, income float64) (entity5.FederalTax, error)
 }
 
 func NewFederalTax(dataProvider domain.FederalDataProvider) FederalTax {
@@ -35,8 +35,8 @@ type federalTaxImpl struct {
 	dataProvider         domain.FederalDataProvider
 }
 
-func (fed *federalTaxImpl) Calculate(year int, pr province.Province, income float64) (entity5.FederalTax, error) {
-	federalTax, err := fed.getData(year, pr, income)
+func (fed *federalTaxImpl) Calculate(year int, income float64) (entity5.FederalTax, error) {
+	federalTax, err := fed.getData(year, income)
 	if err != nil {
 		return federalTax, err
 	}
@@ -44,22 +44,22 @@ func (fed *federalTaxImpl) Calculate(year int, pr province.Province, income floa
 	taxableIncome := float64(int((income-federalTax.TotalDeductions)*1000)) / 1000
 	federalTax.TotalTax = float64(int(fed.taxBracketCalculator.ApplyTaxBrackets(taxableIncome, federalTax.Brackets))*1000) / 1000
 	federalTax.TotalCredits = float64(int((federalTax.CEA+federalTax.EIP+federalTax.BPA+federalTax.CPPBasic)*1000)) / 1000
-	//TODO: check if only the first bracket should be applied for tax credits calculation
+	//TODO: check if only the first bracket should be applied for tax credit calculation
 	federalTax.CreditsTaxReduction = float64(int(fed.taxBracketCalculator.ApplyTaxBrackets(federalTax.TotalCredits, federalTax.Brackets)*1000)) / 1000
 	federalTax.PayableTax = float64(int((federalTax.TotalTax-federalTax.CreditsTaxReduction)*1000)) / 1000
 
 	return federalTax, nil
 }
 
-func (fed *federalTaxImpl) getData(year int, pr province.Province, income float64) (entity5.FederalTax, error) {
+func (fed *federalTaxImpl) getData(year int, income float64) (entity5.FederalTax, error) {
 	bpaEWrapChan := fed.bpaCalculator.GetAmountAsync(income, year)
 	ceaEWrapChan := fed.ceaCalculator.GetAmountAsync(year)
 	cppBasicEWrapChan := fed.cppCalculator.GetCPPBasicAsync(income, year)
 	cppFirstEWrapChan := fed.cppCalculator.GetCPPFirstAdditionalAsync(income, year)
 	cppSecondEWrapChan := fed.cppCalculator.GetCPPSecondAdditionalAsync(income, year)
 	eipEWrapChan := fed.eipCalculator.GetEmployeeContributionAsync(income, year)
-	bracketsEWrapChan := fed.dataProvider.GetTaxBracketsAsync(year, pr)
-	federalTax := entity5.FederalTax{Year: year, Province: pr}
+	bracketsEWrapChan := fed.dataProvider.GetTaxBracketsAsync(year, province.Federal)
+	federalTax := entity5.FederalTax{Year: year}
 	bpaEWrap := <-bpaEWrapChan
 	if bpaEWrap.Error != nil {
 		return federalTax, bpaEWrap.Error

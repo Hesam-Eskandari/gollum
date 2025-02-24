@@ -15,14 +15,14 @@ type FederalCPP interface {
 	CalcCPPSecondAdditional(model entity.FederalCPP, income float64) (float64, error)
 }
 
-func NewFederalCPP(dataProvider cpp.FederalDataProvider) FederalCPP {
+func NewFederalCPP(dataProvider cpp.DataProvider) FederalCPP {
 	return &federalCPPImpl{
 		dataProvider: dataProvider,
 	}
 }
 
 type federalCPPImpl struct {
-	dataProvider cpp.FederalDataProvider
+	dataProvider cpp.DataProvider
 }
 
 func (fed *federalCPPImpl) GetCPPBasicAsync(income float64, year int) <-chan errorWrap.ErrorWrap[float64] {
