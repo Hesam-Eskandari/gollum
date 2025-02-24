@@ -1,4 +1,4 @@
-package fileStorage
+package models
 
 import (
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/brackets/entity"
@@ -6,14 +6,14 @@ import (
 	"slices"
 )
 
-type bracket struct {
+type Bracket struct {
 	Year int     `json:"year"`
 	Rate float64 `json:"rate"`
 	Low  float64 `json:"low"`
 }
 
-func mapBracketsToEntity(brk []bracket) []entity.TaxBracket {
-	slices.SortFunc(brk, func(a, b bracket) int {
+func MapBracketsToEntity(brk []Bracket) []entity.TaxBracket {
+	slices.SortFunc(brk, func(a, b Bracket) int {
 		return int(a.Low - b.Low)
 	})
 	entities := make([]entity.TaxBracket, 0, len(brk))

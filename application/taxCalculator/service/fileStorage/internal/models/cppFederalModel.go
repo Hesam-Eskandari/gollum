@@ -1,10 +1,10 @@
-package fileStorage
+package models
 
 import (
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/cpp/entity"
 )
 
-type cppFederal struct {
+type CppFederal struct {
 	Year                            int     `json:"year"`
 	BasicRate                       float64 `json:"basicRate"`
 	FirstAdditionalRate             float64 `json:"firstAdditionalRate"`
@@ -14,7 +14,7 @@ type cppFederal struct {
 	AdditionalMaxPensionableEarning float64 `json:"additionalMaxPensionableEarning"`
 }
 
-func (cpp *cppFederal) toEntity() entity.FederalCPP {
+func (cpp *CppFederal) ToEntity() entity.FederalCPP {
 	return entity.FederalCPP{
 		Year:                            cpp.Year,
 		BasicRate:                       cpp.BasicRate,
