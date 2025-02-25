@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/tax/interactor"
+	controller2 "github.com/Hesam-Eskandari/gollum/application/taxCalculator/presentation/taxBrackets/controller"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/presentation/taxCalculator/controller"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/service/fileStorage"
 	"github.com/Hesam-Eskandari/gollum/internal/httpServer"
@@ -12,6 +13,7 @@ import (
 func main() {
 	server := httpServer.NewServer(":51483", false)
 	_ = server.AddController(controller.NewTaxCalculatorController())
+	_ = server.AddController(controller2.NewTaxBracketsController())
 	if err := <-server.Launch(); err != nil {
 		panic(err)
 	}

@@ -18,7 +18,7 @@ func MapBracketsToEntity(brk []Bracket) []entity.TaxBracket {
 	})
 	entities := make([]entity.TaxBracket, 0, len(brk))
 	for i, b := range brk {
-		high := math.MaxFloat64
+		high := math.Inf(1)
 		if i < len(brk)-1 {
 			high = brk[i+1].Low
 		}
