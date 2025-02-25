@@ -17,26 +17,26 @@ import (
 	"github.com/Hesam-Eskandari/gollum/internal/httpServer/middleware"
 )
 
-func NewTaxBracketsController() httpServer.Controller {
-	return &taxBracketsImpl{
+func NewTaxMarginsController() httpServer.Controller {
+	return &taxMarginsImpl{
 		methodValidator: middleware.NewHttpMethodValidator(),
 	}
 }
 
-type taxBracketsImpl struct {
+type taxMarginsImpl struct {
 	methodValidator middleware.HttpMethodValidator
 }
 
-func (tb *taxBracketsImpl) GetOrderedMiddlewares() []httpServer.Middleware {
-	tb.methodValidator.SetAllowedMethods([]string{http.MethodGet})
-	return []httpServer.Middleware{tb.methodValidator}
+func (tm *taxMarginsImpl) GetOrderedMiddlewares() []httpServer.Middleware {
+	tm.methodValidator.SetAllowedMethods([]string{http.MethodGet})
+	return []httpServer.Middleware{tm.methodValidator}
 }
 
-func (tb *taxBracketsImpl) GetUrl() string {
-	return routes.TaxBracketsUrl
+func (tm *taxMarginsImpl) GetUrl() string {
+	return routes.TaxMarginsUrl
 }
 
-func (tb *taxBracketsImpl) Handle(writer http.ResponseWriter, req *http.Request) {
+func (tm *taxMarginsImpl) Handle(writer http.ResponseWriter, req *http.Request) {
 	qParams := req.URL.Query()
 	if !qParams.Has("province") {
 		http.Error(writer, "province parameter not provided", http.StatusBadRequest)

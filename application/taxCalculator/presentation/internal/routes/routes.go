@@ -2,5 +2,5 @@ package routes
 
 const (
 	TaxCalculatorUrl = "/tax-calculator"
-	TaxBracketsUrl   = "/tax-brackets"
+	TaxMarginsUrl    = "/tax-margins"
 )
