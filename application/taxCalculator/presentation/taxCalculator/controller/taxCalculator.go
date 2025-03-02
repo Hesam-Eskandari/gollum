@@ -46,6 +46,24 @@ func (tc *taxCalculatorImpl) Handle(writer http.ResponseWriter, req *http.Reques
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
+	rrsp := 0.0
+	if qParams.Has("rrsp") {
+		rrsp, err = strconv.ParseFloat(strings.TrimSpace(qParams.Get("rrsp")), 64)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+			return
+		}
+	}
+
+	fhsa := 0.0
+	if qParams.Has("fhsa") {
+		fhsa, err = strconv.ParseFloat(strings.TrimSpace(qParams.Get("fhsa")), 64)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+			return
+		}
+	}
+
 	if !qParams.Has("year") {
 		http.Error(writer, "year is not provided", http.StatusBadRequest)
 		return
@@ -73,13 +91,23 @@ func (tc *taxCalculatorImpl) Handle(writer http.ResponseWriter, req *http.Reques
 	defer cancel()
 	dataProvider := fileStorage.GetFileStorageInstance()
 	federalTaxCalculator := interactor.NewFederalTax(dataProvider)
-	fedTax, err := federalTaxCalculator.Calculate(ctx, year, income)
+	fedTax, err := federalTaxCalculator.Calculate(ctx, year, income-fhsa-rrsp)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusBadRequest)
+		return
+	}
+	fedTaxRaw, err := federalTaxCalculator.Calculate(ctx, year, income)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
 	bcTaxInteractor := interactor.NewBcTax(dataProvider)
-	bcTax, err := bcTaxInteractor.Calculate(ctx, year, income)
+	bcTax, err := bcTaxInteractor.Calculate(ctx, year, income-fhsa-rrsp)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusBadRequest)
+		return
+	}
+	bcTaxRaw, err := bcTaxInteractor.Calculate(ctx, year, income)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
@@ -100,11 +128,14 @@ func (tc *taxCalculatorImpl) Handle(writer http.ResponseWriter, req *http.Reques
 		TotalBcTax:              bcTax.TotalTax,
 		TotalFederalCredits:     fedTax.TotalCredits,
 		TotalBcCredits:          bcTax.TotalCredits,
-		TotalFederalDeductions:  fedTax.TotalDeductions,
-		TotalBcDeductions:       bcTax.TotalDeductions,
+		TotalFederalDeductions:  float64(int((fedTax.TotalDeductions+rrsp+fhsa)*1000)) / 1000,
+		TotalBcDeductions:       float64(int((bcTax.TotalDeductions+rrsp+fhsa)*1000)) / 1000,
 		FederalCreditsReduction: fedTax.CreditsTaxReduction,
 		BcCreditsReduction:      bcTax.CreditsTaxReduction,
-		AfterTaxIncome:          income - fedTax.PayableTax - bcTax.PayableTax - fedTax.EIP - fedTax.CPPBasic - fedTax.CPPFirst - fedTax.CPPSecond,
+		AfterTaxIncome:          float64(int((income-fedTax.PayableTax-bcTax.PayableTax-fedTax.EIP-fedTax.CPPBasic-fedTax.CPPFirst-fedTax.CPPSecond)*1000)) / 1000,
+		TaxReturn:               float64(int((fedTaxRaw.PayableTax-fedTax.PayableTax+bcTaxRaw.PayableTax-bcTax.PayableTax)*1000)) / 1000,
+		RRSPContribution:        rrsp,
+		FHSAContribution:        fhsa,
 	}
 	body, err := json.Marshal(&resp)
 	if err != nil {
@@ -140,4 +171,7 @@ type responseModel struct {
 	FederalCreditsReduction float64 `json:"federalCreditsReduction"`
 	BcCreditsReduction      float64 `json:"bcCreditsReduction"`
 	AfterTaxIncome          float64 `json:"afterTaxIncome"`
+	TaxReturn               float64 `json:"taxReturn"`
+	RRSPContribution        float64 `json:"rrspContribution"`
+	FHSAContribution        float64 `json:"fHsaContribution"`
 }
