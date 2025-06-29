@@ -3,19 +3,21 @@ package main
 import (
 	"fmt"
 	"log/slog"
+	"os"
+	"path"
 	"time"
 
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/presentation/taxCalculator/controller"
 	controller2 "github.com/Hesam-Eskandari/gollum/application/taxCalculator/presentation/taxMargins/controller"
-
-	"github.com/Hesam-Eskandari/gollum/internal/environment"
-	"github.com/Hesam-Eskandari/gollum/internal/fileLogger"
-	"github.com/Hesam-Eskandari/gollum/internal/httpServer"
+	"github.com/Hesam-Eskandari/gollum/library/environment"
+	"github.com/Hesam-Eskandari/gollum/library/fileLogger"
+	"github.com/Hesam-Eskandari/gollum/library/httpServer"
 )
 
 func main() {
 	setup()
 	runServers()
+
 }
 
 func runServers() {
@@ -34,15 +36,19 @@ func setup() {
 	if env == environment.Develop {
 		minLogLevel = slog.LevelDebug
 	}
+	filePath, err := buildLoggerFilePath()
+	if err != nil {
+		panic(err)
+	}
 	config := fileLogger.Config{
 		PurgePeriod:     time.Hour * 24 * 7,
 		CheckPeriod:     time.Minute,
 		MaxFileSizeByte: 1024 * 1024 * 10,
-		Filename:        "./tax-calculator.log",
+		Filename:        filePath,
 		MinLogLevel:     minLogLevel,
 	}
 	logger := fileLogger.New(config)
-	if err := logger.Setup(); err != nil {
+	if err = logger.Setup(); err != nil {
 		panic(err)
 	}
 	defer func() { _ = logger.Destroy() }()
@@ -50,4 +56,16 @@ func setup() {
 	if envErr != nil {
 		slog.Warn(envErr.Error())
 	}
+}
+
+func buildLoggerFilePath() (string, error) {
+	dir, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+	logsFilePath := path.Join(dir, ".logs/tax-calculator")
+	if err = os.MkdirAll(logsFilePath, os.FileMode(0777)); err != nil {
+		return "", err
+	}
+	return path.Join(logsFilePath, "tax-calculator.log"), nil
 }

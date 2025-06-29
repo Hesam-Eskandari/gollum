@@ -12,8 +12,8 @@ import (
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/domain/tax/interactor"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/presentation/internal/routes"
 	"github.com/Hesam-Eskandari/gollum/application/taxCalculator/service/fileStorage"
-	"github.com/Hesam-Eskandari/gollum/internal/httpServer"
-	"github.com/Hesam-Eskandari/gollum/internal/httpServer/middleware"
+	"github.com/Hesam-Eskandari/gollum/library/httpServer"
+	"github.com/Hesam-Eskandari/gollum/library/httpServer/middleware"
 )
 
 func NewTaxCalculatorController() httpServer.Controller {
