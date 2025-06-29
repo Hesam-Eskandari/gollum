@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Hesam-Eskandari/gollum/internal/lrucache"
+	"github.com/Hesam-Eskandari/gollum/library/lrucache"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

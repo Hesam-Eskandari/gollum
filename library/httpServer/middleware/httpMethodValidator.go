@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/Hesam-Eskandari/gollum/internal/httpServer"
+	"github.com/Hesam-Eskandari/gollum/library/httpServer"
 	"net/http"
 )
 
