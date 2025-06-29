@@ -173,5 +173,5 @@ type responseModel struct {
 	AfterTaxIncome          float64 `json:"afterTaxIncome"`
 	TaxReturn               float64 `json:"taxReturn"`
 	RRSPContribution        float64 `json:"rrspContribution"`
-	FHSAContribution        float64 `json:"fHsaContribution"`
+	FHSAContribution        float64 `json:"fhsaContribution"`
 }
